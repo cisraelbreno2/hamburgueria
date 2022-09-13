@@ -7,4 +7,7 @@ import br.com.hamburgueria.models.UserModel;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserModel, Long> {
+	
+	public boolean existsByCpf(String cpf);
+	
 }

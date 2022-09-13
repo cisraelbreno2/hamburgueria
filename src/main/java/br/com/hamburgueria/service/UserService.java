@@ -1,5 +1,6 @@
 package br.com.hamburgueria.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -21,7 +22,20 @@ public class UserService {
 		return userRepository.save(userModel);
 	}
 	
-	public Optional<UserModel> getById(Long id) {
+	@Transactional
+	public void delete(UserModel userModel) {
+		userRepository.delete(userModel);
+	}
+	
+	public List<UserModel> findAll(){
+		return userRepository.findAll();
+	}
+	
+	public Optional<UserModel> findById(Long id) {
 		return userRepository.findById(id);
+	}
+
+	public boolean existsCpf(String cpf) {
+		return userRepository.existsByCpf(cpf);
 	}
 }
