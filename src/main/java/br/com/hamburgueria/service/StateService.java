@@ -1,5 +1,6 @@
 package br.com.hamburgueria.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -31,5 +32,9 @@ public class StateService {
 
 	public boolean existsState(String name) {
 		return stateRepository.existsByName(name);
+	}
+
+	public List<StateModel> findAll() {
+		return stateRepository.findAll();
 	}
 }
