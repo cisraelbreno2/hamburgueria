@@ -1,5 +1,6 @@
 package br.com.hamburgueria.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.hamburgueria.dtos.UserDTO;
+import br.com.hamburgueria.models.RoleModel;
 import br.com.hamburgueria.models.UserModel;
+import br.com.hamburgueria.service.RoleService;
 import br.com.hamburgueria.service.UserService;
 
 @RestController
@@ -31,13 +34,24 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private RoleService roleService;
+	
 	@PostMapping
 	public ResponseEntity<Object> saveUser(@RequestBody @Valid UserDTO userDTO) {
 		var userModel = new UserModel();
-		BeanUtils.copyProperties(userDTO, userModel);
 		if(userService.existsCpf(userDTO.getCpf())) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário já cadastrado.");
 		}
+		
+		BeanUtils.copyProperties(userDTO, userModel);
+		
+		List<RoleModel> roles = new ArrayList<>();
+		userDTO.getRoles().forEach(role -> {
+			Optional<RoleModel> roleModeloOptional = roleService.findById(role.getId());
+			roles.add(roleModeloOptional.get());
+			userModel.setRoles(roles);
+		});
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userModel));
 	}

@@ -1,5 +1,8 @@
 package br.com.hamburgueria.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,14 @@ public class RoleService {
 	@Transactional
 	public RoleModel save(RoleModel roleModel) {
 		return roleRepository.save(roleModel);
+	}
+	
+	public Optional<RoleModel> findById(Long id) {
+		return roleRepository.findById(id);
+	}
+
+	public List<RoleModel> findAll() {
+		return roleRepository.findAll();
 	}
 	
 }

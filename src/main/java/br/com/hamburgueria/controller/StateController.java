@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,10 +34,10 @@ public class StateController {
 	@PostMapping
 	public ResponseEntity<Object> saveState(@RequestBody @Valid StateDTO stateDTO ){
 		var stateModel = new StateModel();
-		BeanUtils.copyProperties(stateDTO, stateModel);
 		if(stateService.existsState(stateDTO.getName())) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Estado já cadastrado.");
 		}
+		BeanUtils.copyProperties(stateDTO, stateModel);
 		return ResponseEntity.status(HttpStatus.CREATED).body(stateService.save(stateModel));
 	}
 	
