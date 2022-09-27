@@ -75,15 +75,12 @@ public class CityController {
 	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateCity(@PathVariable(value = "id") Long id, @RequestBody @Valid CityDTO cityDTO) {
 		Optional<CityModel> cityModelOptional = cityService.findById(id);
-		if(!cityModelOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cidade não encontrada.");
+		if(!cityModelOptional.isPresent() || stateService.findById(cityDTO.getState().getId()).isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cidade/Estado não encontrada.");
 		}
 		var cityModel = new CityModel();
 		BeanUtils.copyProperties(cityDTO, cityModel);
 		cityModel.setId(cityModelOptional.get().getId());
-		if(cityDTO.getState() == null) {
-			cityModel.setState(cityModelOptional.get().getState());
-		}
 		return ResponseEntity.status(HttpStatus.OK).body(cityService.save(cityModel));
 	}
 

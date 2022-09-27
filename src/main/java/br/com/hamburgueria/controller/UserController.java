@@ -87,7 +87,7 @@ public class UserController {
 		Optional<UserModel> userModelOptional = userService.findById(id);
 		
 		if(!userModelOptional.isPresent()) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User não encontrado.");
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
 		}
 		
 		var userModel = new UserModel();
